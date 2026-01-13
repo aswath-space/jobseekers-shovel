@@ -1,0 +1,43 @@
+# Company Watchlist Configuration
+#
+# This file defines the list of companies to monitor for job postings.
+# Copy this file to companies.yml and customize with your target companies.
+
+version: 1
+
+companies:
+  # Example: Greenhouse ATS
+  - id: example-greenhouse
+    name: Example Company (Greenhouse)
+    adapter: greenhouse
+    sources:
+      - url: https://boards.greenhouse.io/examplecompany
+    metadata:
+      tags: [aerospace, r&d]
+      priority: high
+      notes: "Focus on process engineering and manufacturing roles"
+
+  # Example: Lever ATS
+  - id: example-lever
+    name: Example Company (Lever)
+    adapter: lever
+    sources:
+      - url: https://jobs.lever.co/examplecompany
+    metadata:
+      tags: [manufacturing, automation]
+      priority: medium
+      notes: ""
+
+  # Example: Workday ATS
+  - id: example-workday
+    name: Example Company (Workday)
+    adapter: workday
+    sources:
+      - url: https://examplecompany.wd1.myworkdayjobs.com/en-US/External
+    metadata:
+      tags: [biotech, research]
+      priority: low
+      notes: "Check quarterly for specialized roles"
+
+# Supported adapters: greenhouse, lever, workday
+# Add more companies following the same structure

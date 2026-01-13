@@ -1,0 +1,96 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\aswat\AppData\Local\Programs\Python\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: G:\My Drive\All Projects\jobseekers-shovel
+plugins: anyio-4.9.0, dash-2.18.2, cov-7.0.0
+collecting ... collected 1 item
+
+tests/test_repost_validation.py::TestRepostValidation::test_individual_scenarios 
+Scenario: exact_repost
+  Description: Identical job reposted with different URL/ID
+  Expected repost: True
+  Detected as repost: True
+  Classification: repost
+  Reasoning: Likely repost of job 01e24b8b-e5f0-4f41-a556-9761af48bfe0 (similarity: 1.00, first seen: 2024-01-01)
+
+Scenario: title_abbreviation
+  Description: Same job with abbreviated title (Senior -> Sr.)
+  Expected repost: True
+  Detected as repost: True
+  Classification: repost
+  Reasoning: Likely repost of job 01e24b8b-e5f0-4f41-a556-9761af48bfe0 (similarity: 1.00, first seen: 2024-01-01)
+
+Scenario: location_format
+  Description: Same job with state abbreviation (California -> CA)
+  Expected repost: True
+  Detected as repost: True
+  Classification: repost
+  Reasoning: Likely repost of job 22d23e7f-66ae-4472-9ed9-982b13040bfc (similarity: 1.00, first seen: 2024-01-01)
+
+Scenario: different_seniority
+  Description: Different seniority level - genuinely new role
+  Expected repost: False
+  Detected as repost: False
+  Classification: new
+  Reasoning: New job posting (no previous match found)
+
+Scenario: different_location
+  Description: Same title, different location - separate opening
+  Expected repost: False
+  Detected as repost: False
+  Classification: new
+  Reasoning: New job posting (no previous match found)
+
+Scenario: punctuation_variation
+  Description: Same job with different punctuation (dash vs parentheses)
+  Expected repost: True
+  Detected as repost: True
+  Classification: repost
+  Reasoning: Likely repost of job ea1d8d3a-2bc9-4ed7-8ba8-111cf3bd11f7 (similarity: 1.00, first seen: 2024-01-01)
+
+Scenario: remote_to_location
+  Description: Remote job with more specific location qualifier
+  Expected repost: True
+  Detected as repost: True
+  Classification: repost
+  Reasoning: Likely repost of job 51767300-380d-4a7f-b2f1-6a256eb161cd (similarity: 1.00, first seen: 2024-01-01)
+
+Scenario: completely_different
+  Description: Completely different role, same location
+  Expected repost: False
+  Detected as repost: False
+  Classification: new
+  Reasoning: New job posting (no previous match found)
+
+Scenario: word_order
+  Description: Same role with reordered words
+  Expected repost: True
+  Detected as repost: False
+  Classification: new
+  Reasoning: New job posting (no previous match found)
+  WARNING: MISMATCH in scenario 'word_order'
+
+Scenario: specialization_added
+  Description: General role vs specialized role - likely different
+  Expected repost: False
+  Detected as repost: False
+  Classification: new
+  Reasoning: New job posting (no previous match found)
+
+Scenario: different_company_entity
+  Description: Different company ID despite similar name
+  Expected repost: False
+  Detected as repost: False
+  Classification: new
+  Reasoning: New job posting (no previous match found)
+
+Scenario: hybrid_vs_remote
+  Description: Work arrangement difference matters (Hybrid vs In-office)
+  Expected repost: False
+  Detected as repost: True
+  Classification: repost
+  Reasoning: Likely repost of job ea094f25-6f8b-44a8-a62e-85ce58a61095 (similarity: 0.95, first seen: 2024-01-01)
+  WARNING: MISMATCH in scenario 'hybrid_vs_remote'
+PASSED
+
+============================== 1 passed in 0.27s ==============================

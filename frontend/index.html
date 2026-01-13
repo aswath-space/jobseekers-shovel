@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobSeekers Shovel</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>JobSeekers Shovel</h1>
+            <nav class="main-nav">
+                <button class="nav-btn active" data-view="jobs">Active Jobs</button>
+                <button class="nav-btn" data-view="applications">Applications</button>
+                <button class="nav-btn" data-view="help">Help</button>
+            </nav>
+        </header>
+
+        <main class="app-main">
+            <!-- Active Jobs View -->
+            <section id="jobs-view" class="view active">
+                <div class="view-controls">
+                    <div class="search-box">
+                        <input type="text" id="job-search" placeholder="Search jobs...">
+                    </div>
+                    <div class="filters">
+                        <select id="company-filter">
+                            <option value="">All Companies</option>
+                        </select>
+                        <select id="status-filter">
+                            <option value="">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="missing">Missing</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                    <div class="sort-controls">
+                        <select id="sort-by">
+                            <option value="last_seen">Last Seen</option>
+                            <option value="first_seen">First Seen</option>
+                            <option value="company">Company</option>
+                            <option value="title">Title</option>
+                        </select>
+                    </div>
+                    <div class="export-controls">
+                        <button id="export-jobs-csv" class="btn-secondary">Export CSV</button>
+                        <button id="export-jobs-json" class="btn-secondary">Export JSON</button>
+                    </div>
+                </div>
+
+                <div id="jobs-list" class="jobs-list"></div>
+            </section>
+
+            <!-- Applications View -->
+            <section id="applications-view" class="view">
+                <div class="view-header">
+                    <h2>Applications</h2>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button id="export-apps-json" class="btn-secondary">Export JSON</button>
+                        <button id="add-application" class="btn-primary">Add Application</button>
+                    </div>
+                </div>
+                <div id="applications-list" class="applications-list"></div>
+            </section>
+
+            <!-- Help View -->
+            <section id="help-view" class="view">
+                <div class="help-content">
+                    <h2>Getting Started</h2>
+                    <p>JobSeekers Shovel helps you track job postings and manage your job search applications efficiently.</p>
+
+                    <div class="help-section">
+                        <h3>Active Jobs View</h3>
+                        <p>Browse and search through tracked job postings:</p>
+                        <ul>
+                            <li><strong>Search:</strong> Type keywords to filter jobs by title or location</li>
+                            <li><strong>Filter by Company:</strong> View jobs from specific companies</li>
+                            <li><strong>Filter by Status:</strong> Active, Missing, or Closed jobs</li>
+                            <li><strong>Sort:</strong> Organize by last seen, first seen, company, or title</li>
+                            <li><strong>Job Details:</strong> Click any job card to view full details including description, classification reasoning, and observation history</li>
+                            <li><strong>Track Application:</strong> Click the "Track Application" button to record when you apply</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Job Classifications</h3>
+                        <ul>
+                            <li><strong>NEW:</strong> First time seeing this job posting</li>
+                            <li><strong>REPOST:</strong> Similar to a previous posting (90%+ match)</li>
+                            <li><strong>EXISTING:</strong> Seen before and still active</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Job Statuses</h3>
+                        <ul>
+                            <li><strong>ACTIVE:</strong> Currently posted and available</li>
+                            <li><strong>MISSING:</strong> Not seen in recent ingestion run</li>
+                            <li><strong>CLOSED:</strong> Confirmed closed after timeout period</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Applications View</h3>
+                        <p>Track and manage your job applications:</p>
+                        <ul>
+                            <li><strong>Stage Tracking:</strong> Applied, Screening, Interview, Offer, or Rejected</li>
+                            <li><strong>Follow-up Reminders:</strong> Set next follow-up dates and get visual alerts</li>
+                            <li><strong>Notes:</strong> Record important details about each application</li>
+                            <li><strong>Contact Information:</strong> Store recruiter or contact person details</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Exporting Data</h3>
+                        <ul>
+                            <li><strong>Jobs Export:</strong> Download jobs as CSV or JSON for analysis</li>
+                            <li><strong>Applications Export:</strong> Download your application history as JSON</li>
+                            <li><strong>Note:</strong> Exports respect current filters and search criteria</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Running Job Ingestion</h3>
+                        <p>To fetch new jobs from configured companies, run:</p>
+                        <pre><code>python -m src.ingestion</code></pre>
+                        <p>This will update the jobs database with the latest postings.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Data Storage</h3>
+                        <ul>
+                            <li><strong>Jobs:</strong> Stored in <code>data/jobs/jobs-v1.json</code></li>
+                            <li><strong>Applications:</strong> Stored locally in your browser (LocalStorage)</li>
+                            <li><strong>Note:</strong> Application data is device-specific. Export regularly to back up.</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Keyboard Tips</h3>
+                        <ul>
+                            <li>Click job cards to view details</li>
+                            <li>Press ESC or click outside modals to close them</li>
+                            <li>Use the navigation buttons to switch between views</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Need More Help?</h3>
+                        <p>For detailed documentation, see:</p>
+                        <ul>
+                            <li><strong>QUICKSTART.md</strong> - Quick setup guide</li>
+                            <li><strong>docs/usage.md</strong> - Detailed usage instructions</li>
+                            <li><strong>README.md</strong> - Project overview and architecture</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Job Detail Modal -->
+    <div id="job-detail-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="job-detail-title"></h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div id="job-detail-content"></div>
+        </div>
+    </div>
+
+    <!-- Application Form Modal -->
+    <div id="app-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Application</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="application-form">
+                <input type="hidden" id="app-id">
+                <input type="hidden" id="app-job-id">
+
+                <div class="form-group">
+                    <label>Job</label>
+                    <div id="app-job-info" class="job-info-display"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="applied-date">Applied Date</label>
+                    <input type="date" id="applied-date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="stage">Stage</label>
+                    <select id="stage" required>
+                        <option value="applied">Applied</option>
+                        <option value="screening">Screening</option>
+                        <option value="interview">Interview</option>
+                        <option value="offer">Offer</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-person">Contact Person</label>
+                    <input type="text" id="contact-person">
+                </div>
+
+                <div class="form-group">
+                    <label for="next-follow-up">Next Follow-up Date</label>
+                    <input type="date" id="next-follow-up">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary modal-close">Cancel</button>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/dataLoader.js"></script>
+    <script src="js/applicationTracker.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

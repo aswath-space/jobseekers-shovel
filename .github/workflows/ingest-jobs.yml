@@ -1,0 +1,64 @@
+name: Job Ingestion
+
+on:
+  # Run daily at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run job ingestion
+        run: |
+          python -m src.ingestion
+        env:
+          PYTHONUNBUFFERED: 1
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet data/jobs/jobs-v1.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/jobs/jobs-v1.json
+          git commit -m "Update job database - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git push
+
+      - name: Upload artifact
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: jobs-database-${{ github.run_number }}
+          path: data/jobs/jobs-v1.json
+          retention-days: 90

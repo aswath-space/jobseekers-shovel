@@ -1,0 +1,63 @@
+# Ingestion Configuration
+#
+# Controls how job ingestion is performed
+
+version: 1
+
+# Scheduling configuration
+schedule:
+  # How often to run ingestion (in hours)
+  # Common values: 6 (4x/day), 12 (2x/day), 24 (1x/day)
+  frequency_hours: 6
+
+# HTTP crawling behavior
+crawling:
+  # Delay between requests to the same host (seconds)
+  # Minimum recommended: 1 second
+  request_delay_seconds: 2
+
+  # User agent string for HTTP requests
+  user_agent: "JobSeekersShovel/1.0 (Personal Job Tracker)"
+
+  # Request timeout (seconds)
+  timeout_seconds: 30
+
+  # Maximum retry attempts for failed requests
+  max_retries: 3
+
+  # Retry backoff multiplier (seconds)
+  # Retry delays: 1s, 2s, 4s, etc.
+  retry_backoff: 1
+
+# Job classification settings
+classification:
+  # Time window for detecting reposts (days)
+  # If a matching job was seen within this window, it's likely a repost
+  repost_window_days: 30
+
+  # Fuzzy matching threshold for job titles (0.0 to 1.0)
+  # Higher = stricter matching, lower = more lenient
+  # Recommended: 0.85-0.95
+  fuzzy_match_threshold: 0.90
+
+# Job lifecycle settings
+lifecycle:
+  # Days until a missing job is marked as closed
+  # If a job is not seen for this many days, it's considered closed
+  missing_timeout_days: 10
+
+  # Data retention period for detailed observations (days)
+  # Observations older than this are archived to monthly files
+  retention_days: 90
+
+# Logging settings
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: INFO
+
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+  # Log to file in addition to console
+  file_enabled: true
+  file_path: "logs/ingestion.log"

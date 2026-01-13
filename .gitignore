@@ -1,6 +1,50 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+ENV/
+
+# Environment
 .env
+.env.local
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Claude
 .claude/
+
+# Configuration (keep examples, ignore user config)
+config/companies.yml
+
+# Data (keep structure, ignore content except .gitkeep)
+data/jobs/*.json
+data/jobs/snapshots/*.json
+data/history/*.json
+!**/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+.cache/
+tmpclaude*
