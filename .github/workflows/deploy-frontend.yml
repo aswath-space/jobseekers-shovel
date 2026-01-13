@@ -25,6 +25,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     environment:
       name: github-pages
@@ -37,8 +38,7 @@ jobs:
       # This MUST enable Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
+
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
